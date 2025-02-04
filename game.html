@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Quiz Game</title>
+</head>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f4f4f4;
+}
+
+.container {
+    background: white;
+    padding: 20px;
+    width: 50%;
+    margin: auto;
+    margin-top: 50px;
+    box-shadow: 0px 0px 10px gray;
+    border-radius: 10px;
+}
+
+h1 {
+    color: rgb(25,25,100);
+}
+
+#question {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 20px 0;
+}
+
+#options button {
+    display: block;
+    width: 100%;
+    margin: 10px 0;
+    padding: 10px;
+    font-size: 18px;
+    background-color: green;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+#options button:hover {
+    background-color: #0056b3;
+}
+
+#message {
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+</style>
+<body>
+    <div class="container">
+        <h1>Math Quiz Game</h1>
+        <p id="timer">Time Left: <span id="time">30</span> sec</p>
+        <p id="score">Score: <span id="points">0</span></p>
+        <div id="question">Loading...</div>
+        <div id="options"></div>
+        <p id="message"></p>
+    </div>
+    <script>
+      let score = 0;
+let timeLeft = 120;
+let timer;
+let correctAnswer;
+
+function startTimer() {
+    timer = setInterval(() => {
+        timeLeft--;
+        document.getElementById("time").textContent = timeLeft;
+        if (timeLeft <= 0) {
+            endGame("Time's Up!");
+        }
+    }, 1000);
+}
+
+function generateQuestion() {
+    let num1 = Math.floor(Math.random() * 20) + 1;
+    let num2 = Math.floor(Math.random() * 20) + 1;
+    let operators = ["+", "-", "*", "/"];
+    let operator = operators[Math.floor(Math.random() * operators.length)];
+
+    if (operator === "/") {
+        num1 = num1 * num2; // Ensure whole number division
+    }
+
+    let question = `${num1} ${operator} ${num2} = ?`;
+    correctAnswer = eval(num1 + operator + num2);
+
+    document.getElementById("question").textContent = question;
+    generateOptions(correctAnswer);
+}
+
+function generateOptions(correct) {
+    let options = [correct];
+    while (options.length < 4) {
+        let wrongAnswer = correct + Math.floor(Math.random() * 10) - 5;
+        if (!options.includes(wrongAnswer) && wrongAnswer >= 0) {
+            options.push(wrongAnswer);
+        }
+    }
+
+    options.sort(() => Math.random() - 0.5);
+
+    let optionsDiv = document.getElementById("options");
+    optionsDiv.innerHTML = "";
+    
+    options.forEach(option => {
+        let button = document.createElement("button");
+        button.textContent = option;
+        button.onclick = () => checkAnswer(option);
+        optionsDiv.appendChild(button);
+    });
+}
+
+function checkAnswer(selected) {
+    if (selected === correctAnswer) {
+        score += 10;
+        document.getElementById("points").textContent = score;
+        generateQuestion();
+    } else {
+        endGame("Wrong Answer!");
+    }
+}
+
+function endGame(message) {
+    clearInterval(timer);
+    document.getElementById("message").textContent = `${message} Final Score: ${score}`;
+    document.getElementById("options").innerHTML = "";
+}
+
+window.onload = function () {
+    generateQuestion();
+    startTimer();
+};
+    </script>
+</body>
+</html>
