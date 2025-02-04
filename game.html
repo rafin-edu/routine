@@ -4,9 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Math Quiz Game</title>
-</head>
-<style>
-  body {
+    <style>
+body {
     font-family: Arial, sans-serif;
     text-align: center;
     background-color: #f4f4f4;
@@ -55,29 +54,40 @@ h1 {
     margin-top: 10px;
 }
 </style>
+</head>
 <body>
     <div class="container">
         <h1>Math Quiz Game</h1>
-        <p id="timer">Time Left: <span id="time">30</span> sec</p>
+        <p id="timer">Time Left: <span id="time">130</span> sec</p>
         <p id="score">Score: <span id="points">0</span></p>
         <div id="question">Loading...</div>
         <div id="options"></div>
         <p id="message"></p>
     </div>
-    <script>
-      let score = 0;
-let timeLeft = 120;
-let timer;
+    <script >
+let score = 0;
+let startTime;
+let totalTime = 120 * 1000; // 120 seconds in milliseconds
+let running = true;
 let correctAnswer;
 
 function startTimer() {
-    timer = setInterval(() => {
-        timeLeft--;
-        document.getElementById("time").textContent = timeLeft;
-        if (timeLeft <= 0) {
-            endGame("Time's Up!");
-        }
-    }, 1000);
+    startTime = Date.now();
+    requestAnimationFrame(updateTimer);
+}
+
+function updateTimer() {
+    if (!running) return;
+
+    let elapsedTime = Date.now() - startTime;
+    let timeLeft = Math.max(0, totalTime - elapsedTime);
+    document.getElementById("time").textContent = Math.ceil(timeLeft / 1000);
+
+    if (timeLeft > 0) {
+        requestAnimationFrame(updateTimer);
+    } else {
+        endGame("Time's Up!");
+    }
 }
 
 function generateQuestion() {
@@ -99,6 +109,19 @@ function generateQuestion() {
 
 function generateOptions(correct) {
     let options = [correct];
+    let optionsDiv = document.getElementById("options");
+
+    // If buttons already exist, update them instead of recreating
+    if (optionsDiv.children.length > 0) {
+        let buttons = optionsDiv.children;
+        for (let i = 0; i < buttons.length; i++) {
+            buttons[i].textContent = correct + (i - 1); // Adjust variations
+            buttons[i].onclick = () => checkAnswer(parseInt(buttons[i].textContent));
+        }
+        return;
+    }
+
+    // Create new buttons if they don't exist
     while (options.length < 4) {
         let wrongAnswer = correct + Math.floor(Math.random() * 10) - 5;
         if (!options.includes(wrongAnswer) && wrongAnswer >= 0) {
@@ -108,9 +131,7 @@ function generateOptions(correct) {
 
     options.sort(() => Math.random() - 0.5);
 
-    let optionsDiv = document.getElementById("options");
     optionsDiv.innerHTML = "";
-    
     options.forEach(option => {
         let button = document.createElement("button");
         button.textContent = option;
@@ -130,7 +151,7 @@ function checkAnswer(selected) {
 }
 
 function endGame(message) {
-    clearInterval(timer);
+    running = false;
     document.getElementById("message").textContent = `${message} Final Score: ${score}`;
     document.getElementById("options").innerHTML = "";
 }
@@ -139,6 +160,6 @@ window.onload = function () {
     generateQuestion();
     startTimer();
 };
-    </script>
+</script>
 </body>
 </html>
