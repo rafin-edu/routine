@@ -47,6 +47,19 @@
             font-weight: bold;
             margin-top: 10px;
         }
+        #restart {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #ff5722;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        #restart:hover {
+            background-color: #e64a19;
+        }
     </style>
 </head>
 <body>
@@ -57,40 +70,53 @@
         <div id="question">Loading...</div>
         <div id="options"></div>
         <p id="message"></p>
+        <button id="restart" onclick="restartGame()">Restart Game</button>
     </div>
 
     <script>
         let score = 0;
         let startTime;
-        let totalTime = 120 * 1000; // 130 seconds in milliseconds
+        let totalTime = 120 * 1000; // 120 seconds in milliseconds
         let running = true;
         let correctAnswer;
+        let timerInterval;
 
+        // Start the game
+        function startGame() {
+            score = 0;
+            running = true;
+            document.getElementById("points").textContent = score;
+            document.getElementById("message").textContent = "";
+            document.getElementById("restart").style.display = "none";
+            startTimer();
+            generateQuestion();
+        }
+
+        // Timer logic
         function startTimer() {
             startTime = Date.now();
-            requestAnimationFrame(updateTimer);
+            timerInterval = setInterval(updateTimer, 1000); // Update every second
         }
 
         function updateTimer() {
-            if (!running) return;
-
             let elapsedTime = Date.now() - startTime;
             let timeLeft = Math.max(0, totalTime - elapsedTime);
             document.getElementById("time").textContent = Math.ceil(timeLeft / 1000);
 
-            if (timeLeft > 0) {
-                requestAnimationFrame(updateTimer);
-            } else {
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
                 endGame("Time's Up!");
             }
         }
 
+        // Generate a new question
         function generateQuestion() {
             let num1 = Math.floor(Math.random() * 20) + 1;
             let num2 = Math.floor(Math.random() * 20) + 1;
             let operators = ["+", "-", "*", "/"];
             let operator = operators[Math.floor(Math.random() * operators.length)];
 
+            // Ensure division problems are valid
             if (operator === "/") {
                 while (num1 % num2 !== 0) {
                     num1 = Math.floor(Math.random() * 20) + 1;
@@ -105,6 +131,7 @@
             generateOptions(correctAnswer);
         }
 
+        // Generate answer options
         function generateOptions(correct) {
             let options = [correct];
             let optionsDiv = document.getElementById("options");
@@ -127,6 +154,7 @@
             });
         }
 
+        // Check the selected answer
         function checkAnswer(selected) {
             if (selected === correctAnswer) {
                 score += 10;
@@ -137,16 +165,23 @@
             }
         }
 
+        // End the game
         function endGame(message) {
             running = false;
+            clearInterval(timerInterval);
             document.getElementById("message").textContent = `${message} Final Score: ${score}`;
             document.getElementById("options").innerHTML = "";
+            document.getElementById("restart").style.display = "block";
         }
 
-        window.onload = function () {
-            generateQuestion();
-            startTimer();
-        };
+        // Restart the game
+        function restartGame() {
+            clearInterval(timerInterval);
+            startGame();
+        }
+
+        // Initialize the game on page load
+        window.onload = startGame;
     </script>
 </body>
 </html>
