@@ -7,10 +7,17 @@
     <style>
       body {
         font-family: Arial, sans-serif;
-        background-color: #f4f6f9;
+        background: linear-gradient(135deg, #f4f6f9, #e2e8f0);
         color: #333;
         margin: 0;
         padding: 20px;
+        animation: gradientAnimation 10s ease infinite;
+      }
+
+      @keyframes gradientAnimation {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
       }
 
       h1 {
@@ -20,6 +27,18 @@
         font-size: 3rem;
         text-transform: uppercase;
         letter-spacing: 2px;
+        animation: fadeInDown 1.5s ease;
+      }
+
+      @keyframes fadeInDown {
+        0% {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
 
       table {
@@ -30,6 +49,18 @@
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         border-radius: 10px;
         overflow: hidden;
+        animation: fadeInUp 1.5s ease;
+      }
+
+      @keyframes fadeInUp {
+        0% {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
 
       th,
@@ -39,6 +70,7 @@
         text-align: center;
         border: 1px solid #ddd;
         border-bottom: 2px solid #ddd;
+        transition: background-color 0.3s ease, transform 0.3s ease;
       }
 
       th {
@@ -46,6 +78,12 @@
         color: white;
         font-size: 1.1rem;
         text-transform: uppercase;
+        animation: fadeIn 2s ease;
+      }
+
+      @keyframes fadeIn {
+        0% { opacity: 0; }
+        100% { opacity: 1; }
       }
 
       tr:nth-child(even) {
@@ -54,6 +92,7 @@
 
       tr:hover {
         background-color: #eaf1f8;
+        transform: scale(1.02);
       }
 
       td {
@@ -70,6 +109,7 @@
         font-weight: bold;
         margin: 20px 0;
         color: #34495e;
+        animation: fadeIn 2s ease;
       }
 
       .table-container {
@@ -113,11 +153,6 @@
             <td><b>Bangla 1st Paper</b></td>
             <td>101<br>103</td>
             <td>10 April</td>
-          </tr>
-          <tr>
-            <td><b>Bangla 2nd Paper</b></td>
-            <td>102<br>104</td>
-            <td>13 April</td>
           </tr>
           <tr>
             <td><b>English 1st Paper</b></td>
@@ -173,6 +208,11 @@
             <td><b>Bangladesh And Global Studies</b></td>
             <td>150</td>
             <td>8 May</td>
+          </tr>
+          <tr>
+            <td>Bangla 2nd Paper</td>
+            <td>102 <br>104</td>
+            <td>13 May</td>
           </tr>
         </tbody>
       </table>
