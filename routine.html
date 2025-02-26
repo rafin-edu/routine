@@ -12,6 +12,7 @@
         margin: 0;
         padding: 20px;
         animation: gradientAnimation 10s ease infinite;
+        text-align: center;
       }
 
       @keyframes gradientAnimation {
@@ -21,9 +22,8 @@
       }
 
       h1 {
-        text-align: center;
         color: #2c3e50;
-        margin-bottom: 30px;
+        margin-bottom: 20px;
         font-size: 3rem;
         text-transform: uppercase;
         letter-spacing: 2px;
@@ -39,6 +39,23 @@
           opacity: 1;
           transform: translateY(0);
         }
+      }
+
+      .print-button {
+        background-color: #3498db;
+        color: white;
+        padding: 10px 20px;
+        font-size: 1rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s ease, transform 0.2s ease;
+        margin-bottom: 20px;
+      }
+
+      .print-button:hover {
+        background-color: #2980b9;
+        transform: scale(1.05);
       }
 
       table {
@@ -63,13 +80,11 @@
         }
       }
 
-      th,
-      td {
+      th, td {
         padding: 15px;
         font-size: 1rem;
         text-align: center;
         border: 1px solid #ddd;
-        border-bottom: 2px solid #ddd;
         transition: background-color 0.3s ease, transform 0.3s ease;
       }
 
@@ -78,12 +93,6 @@
         color: white;
         font-size: 1.1rem;
         text-transform: uppercase;
-        animation: fadeIn 2s ease;
-      }
-
-      @keyframes fadeIn {
-        0% { opacity: 0; }
-        100% { opacity: 1; }
       }
 
       tr:nth-child(even) {
@@ -100,18 +109,6 @@
         color: #34495e;
       }
 
-      b {
-        color: #2c3e50;
-      }
-
-      caption {
-        font-size: 1.2rem;
-        font-weight: bold;
-        margin: 20px 0;
-        color: #34495e;
-        animation: fadeIn 2s ease;
-      }
-
       .table-container {
         display: flex;
         justify-content: center;
@@ -119,7 +116,6 @@
         margin-top: 20px;
       }
 
-      /* Add a responsive design */
       @media (max-width: 768px) {
         table {
           width: 100%;
@@ -129,8 +125,7 @@
           font-size: 2.5rem;
         }
 
-        th,
-        td {
+        th, td {
           font-size: 0.9rem;
         }
       }
@@ -138,9 +133,10 @@
   </head>
   <body>
     <h1>SSC Routine 2025</h1>
+    <button class="print-button" onclick="window.print()">Print Routine</button>
     <div class="table-container">
       <table>
-        <caption>Exam Schedule for SSC 2025</caption>
+        <caption><strong>Exam Schedule for SSC 2025</strong></caption>
         <thead>
           <tr>
             <th>Subject</th>
