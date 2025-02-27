@@ -60,6 +60,20 @@
         #restart:hover {
             background-color: #e64a19;
         }
+        #timer-bar {
+            height: 20px;
+            background-color: #f3f3f3;
+            border-radius: 5px;
+            margin: 20px 0;
+            width: 100%;
+            box-shadow: inset 0px 0px 5px gray;
+        }
+        #timer-progress {
+            height: 100%;
+            width: 100%;
+            background-color: green;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
@@ -67,8 +81,16 @@
         <h1>Math Quiz Game</h1>
         <p id="timer">Time Left: <span id="time">120</span> sec</p>
         <p id="score">Score: <span id="points">0</span></p>
+        <p>Difficulty:
+            <select id="difficulty" onchange="setDifficulty()">
+                <option value="easy">Easy</option>
+                <option value="medium">Medium</option>
+                <option value="hard">Hard</option>
+            </select>
+        </p>
         <div id="question">Loading...</div>
         <div id="options"></div>
+        <div id="timer-bar"><div id="timer-progress"></div></div>
         <p id="message"></p>
         <button id="restart" onclick="restartGame()">Restart Game</button>
     </div>
@@ -80,6 +102,24 @@
         let running = true;
         let correctAnswer;
         let timerInterval;
+        let difficulty = 'easy';  // Default difficulty
+
+        // Sound effects
+        const correctSound = new Audio('https://www.soundjay.com/button/beep-07.wav');
+        const wrongSound = new Audio('https://www.soundjay.com/button/beep-09.wav');
+        const timerSound = new Audio('https://www.soundjay.com/button/beep-03.wav');
+
+        // Difficulty settings
+        const difficultyLevels = {
+            easy: { min: 1, max: 10 },
+            medium: { min: 5, max: 20 },
+            hard: { min: 10, max: 30 }
+        };
+
+        function setDifficulty() {
+            difficulty = document.getElementById("difficulty").value;
+            restartGame();
+        }
 
         // Start the game
         function startGame() {
@@ -102,6 +142,8 @@
             let elapsedTime = Date.now() - startTime;
             let timeLeft = Math.max(0, totalTime - elapsedTime);
             document.getElementById("time").textContent = Math.ceil(timeLeft / 1000);
+            let progress = Math.max(0, timeLeft / totalTime * 100);
+            document.getElementById("timer-progress").style.width = progress + '%';
 
             if (timeLeft <= 0) {
                 clearInterval(timerInterval);
@@ -111,16 +153,16 @@
 
         // Generate a new question
         function generateQuestion() {
-            let num1 = Math.floor(Math.random() * 20) + 1;
-            let num2 = Math.floor(Math.random() * 20) + 1;
+            let num1 = Math.floor(Math.random() * (difficultyLevels[difficulty].max - difficultyLevels[difficulty].min + 1)) + difficultyLevels[difficulty].min;
+            let num2 = Math.floor(Math.random() * (difficultyLevels[difficulty].max - difficultyLevels[difficulty].min + 1)) + difficultyLevels[difficulty].min;
             let operators = ["+", "-", "*", "/"];
             let operator = operators[Math.floor(Math.random() * operators.length)];
 
             // Ensure division problems are valid
             if (operator === "/") {
-                while (num1 % num2 !== 0) {
-                    num1 = Math.floor(Math.random() * 20) + 1;
-                    num2 = Math.floor(Math.random() * 20) + 1;
+                while (num1 % num2 !== 0 || num2 === 0) {
+                    num1 = Math.floor(Math.random() * (difficultyLevels[difficulty].max - difficultyLevels[difficulty].min + 1)) + difficultyLevels[difficulty].min;
+                    num2 = Math.floor(Math.random() * (difficultyLevels[difficulty].max - difficultyLevels[difficulty].min + 1)) + difficultyLevels[difficulty].min;
                 }
             }
 
@@ -158,9 +200,11 @@
         function checkAnswer(selected) {
             if (selected === correctAnswer) {
                 score += 10;
+                correctSound.play();
                 document.getElementById("points").textContent = score;
                 generateQuestion();
             } else {
+                wrongSound.play();
                 endGame("Wrong Answer!");
             }
         }
