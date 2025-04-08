@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSC Routine 2025</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>SSC Routine 2025</h1>
+            <div class="controls">
+                <button id="printBtn" class="action-btn">Print Routine</button>
+                <button id="darkModeBtn" class="action-btn">Dark Mode</button>
+                <button id="reminderBtn" class="action-btn">Set Reminders</button>
+                <input type="text" id="searchInput" placeholder="Search subjects..." aria-label="Search subjects">
+            </div>
+        </header>
+
+        <div class="countdown-container">
+            <h2>Time Remaining Until First Exam</h2>
+            <div class="countdown-timer">
+                <div class="countdown-item">
+                    <span id="days">00</span>
+                    <span>Days</span>
+                </div>
+                <div class="countdown-item">
+                    <span id="hours">00</span>
+                    <span>Hours</span>
+                </div>
+                <div class="countdown-item">
+                    <span id="minutes">00</span>
+                    <span>Minutes</span>
+                </div>
+                <div class="countdown-item">
+                    <span id="seconds">00</span>
+                    <span>Seconds</span>
+                </div>
+            </div>
+        </div>
+
+        <main>
+            <table id="routineTable">
+                <caption>SSC Examination Schedule 2025</caption>
+                <thead>
+                    <tr>
+                        <th>Subject</th>
+                        <th>Code</th>
+                        <th>Exam Date</th>
+                        <th>Days Left</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="subject-bangla">
+                        <td>Bangla 1st Paper</td>
+                        <td>101</td>
+                        <td>10 April 2025</td>
+                        <td class="days-left"></td>
+                    </tr>
+                    <tr class="subject-english">
+                        <td>English 1st Paper</td>
+                        <td>107</td>
+                        <td>15 April 2025</td>
+                        <td class="days-left"></td>
+                    </tr>
+                    <tr class="subject-english">
+                        <td>English 2nd Paper</td>
+                        <td>108</td>
+                        <td>17 April 2025</td>
+                        <td class="days-left"></td>
+                    </tr>
+                    <!-- Additional subjects here -->
+                                              <tr class="language">
+            <td><b>English 2nd Paper</b></td>
+            <td>108</td>
+            <td>17 April 2025</td>
+            <td class="days-left"></td>
+          </tr>
+          <tr class="science">
+            <td><b>Mathematics</b></td>
+            <td>109</td>
+            <td>21 April 2025</td>
+            <td class="days-left"></td>
+          </tr>
+          <tr class="religion">
+            <td><b>Islam And Moral Education</b></td>
+            <td>111</td>
+            <td>22 April 2025</td>
+            <td class="days-left"></td>
+          </tr>
+          <tr class="technology">
+            <td><b>ICT</b></td>
+            <td>154</td>
+            <td>23 April 2025</td>
+            <td class="days-left"></td>
+          </tr>
+          <tr class="physical">
+            <td><b>Physical Education</b></td>
+            <td>133</td>
+            <td>24 April 2025</td>
+            <td class="days-left"></td>
+          </tr>
+          <tr class="science">
+            <td><b>Physics</b></td>
+            <td>136</td>
+            <td>27 April 2025</td>
+            <td class="days-left"></td>
+          </tr>
+          <tr class="science">
+            <td><b>Chemistry</b></td>
+            <td>137</td>
+            <td>29 April 2025</td>
+            <td class="days-left"></td>
+          </tr>
+          <tr class="science">
+            <td><b>Higher Mathematics</b></td>
+            <td>126</td>
+            <td>4 May 2025</td>
+            <td class="days-left"></td>
+          </tr>
+          <tr class="science">
+            <td><b>Biology</b></td>
+            <td>138</td>
+            <td>6 May 2025</td>
+            <td class="days-left"></td>
+          </tr>
+          <tr class="humanities">
+            <td><b>Bangladesh And Global Studies</b></td>
+            <td>150</td>
+            <td>8 May 2025</td>
+            <td class="days-left"></td>
+          </tr>
+          <tr class="language">
+            <td><b>Bangla 2nd Paper</b></td>
+            <td>102</td>
+            <td>13 May 2025</td>
+            <td class="days-left"></td>
+          </tr>
+                </tbody>
+            </table>
+        </main>
+
+        <div class="notification" id="notification"></div>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>
