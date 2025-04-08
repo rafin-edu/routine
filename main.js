@@ -174,7 +174,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }, timeDiff - 86400000);
         
         // Reminder on exam day
-        setTimeout(() => {
+        setTimeout(() => {c
           new Notification(`আজ পরীক্ষা!`, {
             body: `আজ আপনার ${subject} পরীক্ষা! সফল হোন।`,
             icon: 'https://cdn-icons-png.flaticon.com/512/2232/2232688.png'
