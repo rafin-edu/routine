@@ -7,6 +7,15 @@ document.addEventListener('DOMContentLoaded', function() {
   const notification = document.getElementById('notification');
   const routineTable = document.getElementById('routineTable');
 
+  // Custom daily reminder messages (Bangla)
+  const dailyMessages = [
+    "পরীক্ষার প্রস্তুতি নিন! {subject} পরীক্ষা আসন্ন।",
+    "{subject} পরীক্ষার জন্য রিভিশন শুরু করুন।",
+    "আজই {subject} পরীক্ষার শেষ প্রস্তুতি নিন।",
+    "{subject} পরীক্ষায় ভালো করতে আজই চূড়ান্ত রিভিশন করুন।",
+    "মনে রাখবেন, {subject} পরীক্ষা আসন্ন! প্রস্তুত থাকুন।"
+  ];
+
   // Initialize dark mode
   function initDarkMode() {
     const isDark = localStorage.getItem('darkMode') === 'true';
@@ -46,8 +55,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (distance < 0) {
       document.querySelector('.countdown-container').innerHTML = `
-        <h2>Exams Have Started!</h2>
-        <p>Good luck with your exams!</p>
+        <h2>পরীক্ষা শুরু হয়েছে!</h2>
+        <p>আপনার পরীক্ষার জন্য শুভকামনা!</p>
       `;
       return;
     }
@@ -80,15 +89,15 @@ document.addEventListener('DOMContentLoaded', function() {
       row.classList.remove('completed', 'today', 'upcoming');
       
       if (daysLeft < 0) {
-        daysLeftCell.textContent = 'Completed';
+        daysLeftCell.textContent = 'সম্পন্ন';
         daysLeftCell.classList.add('completed');
         row.classList.add('completed');
       } else if (daysLeft === 0) {
-        daysLeftCell.textContent = 'Today!';
+        daysLeftCell.textContent = 'আজ!';
         daysLeftCell.classList.add('today');
         row.classList.add('today');
       } else {
-        daysLeftCell.textContent = `${daysLeft} days`;
+        daysLeftCell.textContent = `${daysLeft} দিন`;
         if (daysLeft <= 7) {
           daysLeftCell.classList.add('upcoming');
           row.classList.add('upcoming');
@@ -106,27 +115,34 @@ document.addEventListener('DOMContentLoaded', function() {
     }, duration);
   }
 
-  // Exam reminders
+  // Get random daily message
+  function getDailyMessage(subject) {
+    const randomIndex = Math.floor(Math.random() * dailyMessages.length);
+    return dailyMessages[randomIndex].replace("{subject}", subject);
+  }
+
+  // Exam reminders with daily notifications
   reminderBtn.addEventListener('click', function() {
     if (!('Notification' in window)) {
-      showNotification("This browser doesn't support notifications");
+      showNotification("এই ব্রাউজার নোটিফিকেশন সাপোর্ট করে না");
       return;
     }
 
     if (Notification.permission === 'granted') {
-      scheduleReminders();
+      scheduleDailyReminders();
     } else if (Notification.permission !== 'denied') {
       Notification.requestPermission().then(permission => {
         if (permission === 'granted') {
-          scheduleReminders();
+          scheduleDailyReminders();
         }
       });
     }
 
-    showNotification("Reminders set for all exams!");
+    showNotification("দৈনিক রিমাইন্ডার সেট করা হয়েছে!");
   });
 
-  function scheduleReminders() {
+  // Schedule daily reminders for each exam
+  function scheduleDailyReminders() {
     const now = new Date();
     const rows = routineTable.querySelectorAll('tbody tr');
     
@@ -137,20 +153,30 @@ document.addEventListener('DOMContentLoaded', function() {
       const daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
       
       if (daysLeft > 0) {
-        // Reminder 1 day before
-        if (daysLeft === 1) {
-          setTimeout(() => {
-            new Notification(`SSC Exam Tomorrow!`, {
-              body: `${subject} exam is tomorrow. Prepare well!`,
-              icon: 'https://cdn-icons-png.flaticon.com/512/2232/2232688.png'
-            });
-          }, timeDiff - 86400000);
+        // Daily reminders starting from 7 days before exam
+        if (daysLeft <= 7) {
+          for (let i = daysLeft; i > 0; i--) {
+            setTimeout(() => {
+              new Notification(`পরীক্ষার রিমাইন্ডার`, {
+                body: getDailyMessage(subject),
+                icon: 'https://cdn-icons-png.flaticon.com/512/2232/2232688.png'
+              });
+            }, timeDiff - (i * 86400000));
+          }
         }
+        
+        // Special reminder 1 day before
+        setTimeout(() => {
+          new Notification(`পরীক্ষা আগামীকাল!`, {
+            body: `${subject} পরীক্ষা আগামীকাল! চূড়ান্ত প্রস্তুতি নিন।`,
+            icon: 'https://cdn-icons-png.flaticon.com/512/2232/2232688.png'
+          });
+        }, timeDiff - 86400000);
         
         // Reminder on exam day
         setTimeout(() => {
-          new Notification(`SSC Exam Today!`, {
-            body: `Your ${subject} exam is today. All the best!`,
+          new Notification(`আজ পরীক্ষা!`, {
+            body: `আজ আপনার ${subject} পরীক্ষা! সফল হোন।`,
             icon: 'https://cdn-icons-png.flaticon.com/512/2232/2232688.png'
           });
         }, timeDiff);
