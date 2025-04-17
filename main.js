@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Countdown timer
   function updateCountdown() {
-    const firstExamDate = new Date('April 10, 2025 00:00:00').getTime();
+    const firstExamDate = new Date('April 21, 2025 10:00:00').getTime();
     const now = new Date().getTime();
     const distance = firstExamDate - now;
     
